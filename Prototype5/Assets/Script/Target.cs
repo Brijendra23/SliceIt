@@ -26,15 +26,26 @@ public class Target : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        Destroy(gameObject);
-        Instantiate(particleExplosion, transform.position, particleExplosion.transform.rotation);
-        gameManager.UpdateScore(pointValue) ;
+        if(gameManager.isGameActive)
+        {
+            Destroy(gameObject);
+            Instantiate(particleExplosion, transform.position, particleExplosion.transform.rotation);
+            gameManager.UpdateScore(pointValue);
+        }
+        
 
     }
-    private void OnTriggerEnter(Collider other) 
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Sensor"))
-        { Destroy(gameObject); }
+
+        {
+            Destroy(gameObject);
+            if (!gameObject.CompareTag("Bad"))
+            {
+                gameManager.GameOver();
+            }
+        } 
     }
 
     // Update is called once per frame
